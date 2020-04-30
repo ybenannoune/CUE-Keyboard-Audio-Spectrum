@@ -66,6 +66,8 @@
             // 
             // chart_Spectrum
             // 
+            chartArea1.AxisY.Maximum = 255D;
+            chartArea1.AxisY.Minimum = 0D;
             chartArea1.Name = "ChartArea1";
             this.chart_Spectrum.ChartAreas.Add(chartArea1);
             this.chart_Spectrum.Location = new System.Drawing.Point(12, 39);
@@ -73,7 +75,7 @@
             series1.ChartArea = "ChartArea1";
             series1.Name = "Series1";
             this.chart_Spectrum.Series.Add(series1);
-            this.chart_Spectrum.Size = new System.Drawing.Size(406, 191);
+            this.chart_Spectrum.Size = new System.Drawing.Size(387, 191);
             this.chart_Spectrum.TabIndex = 3;
             this.chart_Spectrum.Text = "chart1";
             // 
