@@ -17,7 +17,8 @@ namespace CUE_Keyboard_Audio_Spectrum
         private WASAPIPROC _process;        //callback function to obtain data
         private System.Timers.Timer _t;     //timer that refreshes the analysis
         private bool _initialized;          //initialized flag
-        private Action processingCallback;
+        public event EventHandler<List<byte>> ProcessCompleted;
+
 
         public List<string> DeviceList { get => _deviceList; }
         public List<byte> getSpectrumData() { return _spectrumData; }
@@ -25,7 +26,7 @@ namespace CUE_Keyboard_Audio_Spectrum
 
         private bool _enable = false;               //enabled status
 
-        public BassAnalyzer(Action processingCallback, int period)
+        public BassAnalyzer(int period)
         {
             _fft = new float[1024];
             _t = new System.Timers.Timer(period);
@@ -38,8 +39,6 @@ namespace CUE_Keyboard_Audio_Spectrum
             _process = new WASAPIPROC(Process);
             _spectrumData = new List<byte>();
             _deviceList = new List<string>();
-
-            this.processingCallback = processingCallback;
 
             Init();
         }
@@ -119,11 +118,8 @@ namespace CUE_Keyboard_Audio_Spectrum
             //int level = BassWasapi.BASS_WASAPI_GetLevel();
             //LPower = Utils.LowWord32(level);
             //RPower = Utils.HighWord32(level);
-            if (processingCallback != null)
-            {
-                processingCallback();
-            }
-         
+
+            ProcessCompleted?.Invoke(this,_spectrumData);
         }
 
         // WASAPI callback, required for continuous recording
